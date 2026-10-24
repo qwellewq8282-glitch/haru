@@ -1,5 +1,5 @@
 // 하루결 오프라인 캐시. 앱을 고친 뒤에는 VERSION 숫자를 올려야 휴대폰에 새 버전이 반영돼요.
-const VERSION = "haru-v1";
+const VERSION = "haru-v2";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {

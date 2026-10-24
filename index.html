@@ -7,155 +7,194 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="하루결">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1d1c1a" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#4e1a26">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Gowun+Dodum&family=Nanum+Pen+Script&display=swap">
 <style>
-/* Layout: one narrow paper column like a pocket notebook; tab bar at the bottom like a phone app */
+/* Layout: a burgundy leather cover frames one cream ruled page; dates are round number stickers, entries are handwriting on the rules */
 :root {
-  --paper: #f3f1ec;
-  --sheet: #fbfaf7;
-  --ink: #3b3936;
-  --mute: #8f8a82;
-  --rule: #dcd8d0;
-  --accent: #8a3a34;
-  --soft: #e9e5dd;
-  --sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --leather: #4e1a26;
+  --leather-hi: #6a2534;
+  --stitch: rgba(241, 226, 199, .5);
+  --cream: #f1e6cf;
+  --paper: #f6f0e1;
+  --rule: #dccfb3;
+  --margin: #e0a1a1;
+  --ink: #2b2420;
+  --pencil: #8b7f6e;
+  --dot-g: #2fae4e;
+  --dot-p: #f43d7b;
+  --tape: rgba(236, 226, 150, .78);
+  --pen-red: #c2403a;
+  --display: "Gowun Batang", "AppleMyungjo", serif;
+  --ui: "Gowun Dodum", "Apple SD Gothic Neo", sans-serif;
+  --hand: "Nanum Pen Script", "Gowun Dodum", cursive;
+  --row: 40px;
+  color-scheme: light;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --paper: #1d1c1a; --sheet: #252421; --ink: #e6e2da; --mute: #8f8a82; --rule: #3a3834; --accent: #d08a80; --soft: #2f2d2a; color-scheme: dark } }
-:root[data-theme="dark"] {
-  --paper: #1d1c1a; --sheet: #252421; --ink: #e6e2da; --mute: #8f8a82; --rule: #3a3834; --accent: #d08a80; --soft: #2f2d2a; color-scheme: dark }
-
 * { box-sizing: border-box; }
-body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 400; font-size: 15px; line-height: 1.6;
-  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0; }
-.app { max-width: 520px; margin: 0 auto; padding-block: 28px 110px; }
-button, input, select { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; background: var(--leather); }
+body {
+  margin: 0; min-height: 100vh; font-family: var(--ui); color: var(--ink); font-size: 15px; line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+  background-color: var(--leather);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 60% at 30% 0%, var(--leather-hi), transparent 70%);
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+input, select, textarea { font-size: 16px; } /* iOS zooms in on smaller inputs */
 button { cursor: pointer; }
-:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--dot-p); outline-offset: 2px; }
 
-header.top { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
-.brand { font-size: 13px; letter-spacing: .18em; font-weight: 500; }
-.today { font-family: var(--mono); font-size: 12px; color: var(--mute); }
-.note { font-size: 11px; color: var(--mute); margin: 8px 0 0; }
+/* cover */
+.cover { padding: calc(env(safe-area-inset-top, 0px) + 14px) max(16px, env(safe-area-inset-right, 0px)) 22px max(16px, env(safe-area-inset-left, 0px)); color: var(--cream); }
+.cover-in { max-width: 560px; margin: 0 auto; position: relative; }
+.cover-in::before { content: ""; position: absolute; inset: -6px -6px -12px; border: 1.5px dashed var(--stitch); border-radius: 14px; pointer-events: none; }
+.top { display: flex; justify-content: space-between; align-items: center; padding: 6px 4px 0; }
+.brand { font-family: var(--display); font-size: 26px; letter-spacing: .02em; }
+.ghost { background: none; border: 1px solid var(--stitch); color: var(--cream); border-radius: 999px; padding: 4px 12px; font-size: 13px; }
+.month { display: flex; justify-content: space-between; align-items: center; margin: 14px 4px 8px; font-size: 13px; opacity: .85; }
+.month .arr { background: none; border: 0; color: var(--cream); font-size: 18px; padding: 2px 10px; }
+.strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.chip { background: rgba(241, 226, 199, .08); border: 1px solid rgba(241, 226, 199, .16); border-radius: 12px; color: var(--cream);
+  padding: 7px 0 9px; display: grid; justify-items: center; gap: 4px; font-size: 11px; }
+.chip .n { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-size: 15px; }
+.chip.sel .n { background: var(--dot-g); color: #fff; box-shadow: 0 1px 0 rgba(0,0,0,.25), inset 0 -2px 0 rgba(0,0,0,.12); }
+.chip.today .n { outline: 2px solid var(--dot-p); outline-offset: 1px; }
+.chip .pip { width: 4px; height: 4px; border-radius: 50%; background: var(--cream); opacity: 0; }
+.chip.has .pip { opacity: .7; }
 
-.view-title { display: flex; justify-content: space-between; align-items: baseline; margin: 30px 0 6px; }
-.view-title h1 { font-size: 22px; font-weight: 300; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
-.date-nav { display: flex; gap: 2px; align-items: center; font-family: var(--mono); font-size: 13px; color: var(--mute); }
-.date-nav button { background: none; border: 0; padding: 4px 8px; color: var(--mute); }
-.date-nav button:hover { color: var(--ink); }
+/* page */
+.page { position: relative; max-width: 560px; margin: 0 auto; background: var(--paper); min-height: calc(100vh - 220px);
+  border-radius: 6px 6px 0 0; box-shadow: 0 -2px 0 rgba(0,0,0,.18), 0 10px 30px rgba(0,0,0,.35);
+  padding: 24px 40px calc(env(safe-area-inset-bottom, 0px) + 110px) 58px; }
+.page::before { content: ""; position: absolute; top: 0; bottom: 0; left: 44px; width: 1.5px; background: var(--margin); opacity: .7; }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.ribbon { position: absolute; top: -14px; right: 26px; width: 14px; height: 74px; background: var(--pen-red);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%); box-shadow: 0 2px 4px rgba(0,0,0,.2); }
 
-section.block { margin-top: 26px; }
-.label { font-size: 11px; letter-spacing: .14em; color: var(--mute); font-weight: 500; display: flex; justify-content: space-between; padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
-.label span:last-child { font-family: var(--mono); letter-spacing: 0; }
+.head { display: flex; align-items: center; gap: 12px; margin: 0 0 10px -46px; }
+.sticker { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--dot-g); color: #fff;
+  font-family: var(--display); font-size: 17px; box-shadow: 0 1px 1px rgba(0,0,0,.18), inset 0 -2px 0 rgba(0,0,0,.1); }
+.sticker.p { background: var(--dot-p); }
+.sticker.o { background: none; color: var(--pencil); border: 1.5px solid var(--rule); box-shadow: none; }
+.head h1 { font-family: var(--display); font-size: 24px; margin: 0; font-weight: 700; text-wrap: balance; }
+.head small { display: block; font-size: 12px; color: var(--pencil); font-family: var(--ui); font-weight: 400; }
 
-ul.list { list-style: none; margin: 0; padding: 0; }
-.row { display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--rule); min-width: 0; }
-.row .t { font-family: var(--mono); font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
-.row .x { min-width: 0; overflow-wrap: anywhere; }
-.del { background: none; border: 0; color: var(--mute); font-size: 13px; padding: 2px 6px; opacity: .55; }
-.del:hover { opacity: 1; color: var(--accent); }
+.tape { display: inline-block; background: var(--tape); padding: 2px 12px 3px; font-size: 13px; margin: 26px 0 4px; transform: rotate(-1.5deg);
+  clip-path: polygon(2% 0, 100% 6%, 98% 100%, 0 94%); }
+.count { font-size: 12px; color: var(--pencil); margin-left: 8px; }
 
-.todo { grid-template-columns: 22px 1fr auto; }
-.check { width: 16px; height: 16px; border: 1px solid var(--ink); background: none; padding: 0; border-radius: 50%; display: grid; place-items: center; }
-.check.on { background: var(--ink); }
-.check.on::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--sheet); }
-.todo.done .x { color: var(--mute); text-decoration: line-through; text-decoration-color: var(--mute); }
+.row { position: relative; min-height: var(--row); display: flex; align-items: flex-end; gap: 10px; border-bottom: 1px solid var(--rule); padding: 4px 0 3px; }
+.row .t { position: absolute; left: -48px; bottom: 6px; width: 40px; text-align: right; font-size: 11px; color: var(--pencil); font-variant-numeric: tabular-nums; }
+.hand { font-family: var(--hand); font-size: 23px; line-height: 1.25; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.del { background: none; border: 0; color: var(--pencil); font-size: 16px; padding: 0 4px 2px; opacity: .5; }
+.del:hover { opacity: 1; color: var(--pen-red); }
+.check { flex: none; width: 18px; height: 18px; margin-bottom: 5px; border: 1.5px solid var(--ink); border-radius: 4px; background: none; padding: 0; position: relative; }
+.check.on::after { content: "✓"; position: absolute; left: 1px; top: -9px; font-family: var(--hand); font-size: 28px; color: var(--pen-red); }
+.row.done .hand { color: var(--pencil); text-decoration: line-through; text-decoration-color: var(--pen-red); }
+.empty .hand { color: var(--pencil); font-size: 20px; }
 
-.adder { display: flex; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
-.adder input, .adder select { background: transparent; border: 0; border-bottom: 1px dashed transparent; padding: 4px 0; min-width: 0; }
-.adder input:focus, .adder select:focus { outline: none; border-bottom-color: var(--mute); }
-.adder input::placeholder { color: var(--mute); }
-.adder .grow { flex: 1; }
-.adder input[type="time"] { width: 96px; font-family: var(--mono); font-size: 13px; }
-.add-btn { background: none; border: 1px solid var(--ink); padding: 2px 12px; font-size: 13px; border-radius: 999px; white-space: nowrap; }
-.add-btn:hover { background: var(--ink); color: var(--paper); }
-.empty { color: var(--mute); font-size: 13px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.add { display: flex; gap: 8px; align-items: flex-end; min-height: var(--row); border-bottom: 1px solid var(--rule); position: relative; padding-bottom: 3px; }
+.add input { background: transparent; border: 0; padding: 4px 0; min-width: 0; font-family: var(--hand); font-size: 22px; }
+.add input:focus { outline: none; }
+.add input::placeholder { color: #b9ad97; }
+.add .grow { flex: 1; }
+.add input[type="time"] { flex: none; width: 74px; font-family: var(--ui); font-size: 16px; color: var(--pencil); -webkit-appearance: none; appearance: none; padding: 4px 0 6px; }
+.add input[type="time"]::-webkit-calendar-picker-indicator { display: none; }
+.pen { flex: none; background: var(--ink); color: var(--paper); border: 0; border-radius: 999px; padding: 4px 13px; font-size: 13px; margin-bottom: 4px; }
 
-.progress { height: 2px; background: var(--rule); margin-top: 10px; }
-.progress i { display: block; height: 100%; background: var(--accent); transition: width .3s; }
+.blank { height: calc(var(--row) * 3); background: repeating-linear-gradient(to bottom, transparent 0 calc(var(--row) - 1px), var(--rule) calc(var(--row) - 1px) var(--row)); }
 
 /* week */
-.week { display: grid; gap: 0; }
-.day { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rule); background: none; border-left: 0; border-right: 0; border-top: 0; text-align: left; width: 100%; }
-.day:hover { background: var(--soft); }
-.day .d { font-family: var(--mono); font-size: 13px; }
-.day .d b { display: block; font-family: var(--sans); font-weight: 400; font-size: 11px; color: var(--mute); }
-.day.is-today .d { color: var(--accent); }
-.day .items { min-width: 0; font-size: 13px; }
-.day .items div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.day .items .m { color: var(--mute); }
-.dots { display: flex; gap: 3px; margin-top: 4px; }
-.dots i { width: 5px; height: 5px; border-radius: 50%; border: 1px solid var(--ink); }
-.dots i.f { background: var(--ink); }
+.wday { display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--rule);
+  padding: 10px 0; margin-left: -46px; width: calc(100% + 46px); }
+.wday .sticker { width: 32px; height: 32px; font-size: 15px; }
+.wday .body { flex: 1; min-width: 0; }
+.wday .dow { font-size: 12px; color: var(--pencil); }
+.wday .hand { font-size: 20px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wday .todos { font-size: 12px; color: var(--pencil); }
 
 /* research log */
-.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
-.chip { background: none; border: 1px solid var(--rule); padding: 3px 12px; border-radius: 999px; font-size: 12px; color: var(--mute); }
-.chip.on { border-color: var(--ink); color: var(--ink); }
-.log { padding: 16px 0; border-bottom: 1px solid var(--rule); }
-.log .meta { display: flex; gap: 10px; align-items: baseline; font-size: 11px; color: var(--mute); }
-.log .meta .dt { font-family: var(--mono); }
-.log .meta .pj { color: var(--accent); letter-spacing: .06em; }
-.log .meta .del { margin-left: auto; }
-.log p { margin: 6px 0 0; overflow-wrap: anywhere; white-space: pre-wrap; }
-.log-form { display: grid; gap: 8px; padding: 14px; background: var(--sheet); border: 1px solid var(--rule); margin-top: 14px; }
-.log-form textarea { font: inherit; color: inherit; background: transparent; border: 0; resize: vertical; min-height: 70px; padding: 0; }
-.log-form textarea:focus { outline: none; }
-.log-form textarea::placeholder { color: var(--mute); }
-.log-form .bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.log-form select { background: transparent; border: 0; font-size: 13px; color: var(--accent); }
+.form { position: relative; background: #fffbe9; border: 1px solid var(--rule); padding: 18px 14px 10px; margin: 8px 0 6px; box-shadow: 2px 3px 0 rgba(78, 26, 38, .08); transform: rotate(-.4deg); }
+.form::before { content: ""; position: absolute; top: -9px; left: 50%; width: 90px; height: 20px; margin-left: -45px; background: var(--tape); transform: rotate(2deg); }
+.form textarea { width: 100%; background: transparent; border: 0; resize: vertical; min-height: 84px; font-family: var(--hand); font-size: 22px; line-height: 1.4; padding: 0;
+  background-image: repeating-linear-gradient(to bottom, transparent 0 calc(1.4em - 1px), var(--rule) calc(1.4em - 1px) 1.4em); }
+.form textarea:focus { outline: none; }
+.form .bar { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+.form select { background: transparent; border: 0; color: var(--pen-red); font-family: var(--ui); }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; }
+.f { background: none; border: 1px solid var(--rule); border-radius: 999px; padding: 3px 11px; font-size: 12px; color: var(--pencil); }
+.f.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.entry { position: relative; padding: 12px 0 10px; border-bottom: 1px solid var(--rule); }
+.entry .meta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--pencil); }
+.entry .meta .sticker { position: absolute; left: -48px; top: 10px; width: 30px; height: 30px; font-size: 13px; }
+.entry .pj { color: var(--pen-red); }
+.entry .meta .del { margin-left: auto; }
+.entry .hand { display: block; white-space: pre-wrap; margin-top: 2px; }
 
-nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; background: var(--sheet); border-top: 1px solid var(--rule);
-  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-bottom: env(safe-area-inset-bottom, 0px); }
-nav.tabs .in { max-width: 520px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); }
-nav.tabs button { background: none; border: 0; padding: 14px 0 16px; font-size: 13px; color: var(--mute); position: relative; }
-nav.tabs button.on { color: var(--ink); }
-nav.tabs button.on::before { content: ""; position: absolute; top: -1px; left: 30%; right: 30%; height: 1px; background: var(--ink); }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-
-html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
-.app { padding-top: calc(env(safe-area-inset-top, 0px) + 20px); }
-input, select, textarea { font-size: 16px !important; } /* iOS zooms in on smaller inputs */
-.tools { background: none; border: 0; font-size: 12px; color: var(--mute); padding: 4px 0 4px 10px; }
-.backup { margin-top: 14px; padding: 14px; background: var(--sheet); border: 1px solid var(--rule); display: grid; gap: 10px; font-size: 13px; }
-.backup p { margin: 0; color: var(--mute); }
-.backup .bar { display: flex; gap: 8px; flex-wrap: wrap; }
-.backup label.add-btn { display: inline-block; cursor: pointer; }
+/* backup */
+.backup { margin: 4px 0 18px; padding: 12px 14px; background: #fffbe9; border: 1px solid var(--rule); font-size: 13px; display: grid; gap: 10px; }
+.backup p { margin: 0; color: var(--pencil); }
+.backup .bar { display: flex; flex-wrap: wrap; gap: 8px; }
+.backup label.pen { display: inline-block; cursor: pointer; }
 .backup input[type=file] { display: none; }
-.msg { color: var(--accent); }
+.msg { color: var(--pen-red) !important; }
+.note { font-size: 12px; color: var(--pencil); margin: 0 0 6px; }
+
+/* tab bar */
+nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; background-color: var(--leather); background-image: inherit;
+  padding: 0 max(16px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(16px, env(safe-area-inset-left, 0px));
+  box-shadow: 0 -6px 18px rgba(0,0,0,.25); }
+nav.tabs .in { max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1.5px dashed var(--stitch); margin-top: 6px; }
+nav.tabs button { background: none; border: 0; color: var(--cream); opacity: .6; padding: 12px 0 14px; font-size: 13px; display: grid; justify-items: center; gap: 4px; }
+nav.tabs button svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+nav.tabs button.on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
-<div class="app">
-  <header class="top">
-    <span class="brand">하루결</span>
-    <span><span class="today" id="todayLbl"></span><button class="tools" id="toolsBtn" aria-expanded="false">백업</button></span>
-  </header>
-  <p class="note" id="sampleNote">예시 기록이 들어 있어요. 지우고 내 기록으로 채워보세요. 기록은 이 휴대폰에만 저장돼요.</p>
-  <div class="backup" id="backup" hidden>
-    <p>기록은 이 휴대폰에만 저장돼요. 가끔 백업 파일을 내려받아 두면 휴대폰을 바꿔도 옮길 수 있어요.</p>
-    <div class="bar">
-      <button class="add-btn" id="exportBtn">백업 파일 저장</button>
-      <label class="add-btn" for="importFile">백업 불러오기</label>
-      <input type="file" id="importFile" accept="application/json,.json">
+<header class="cover">
+  <div class="cover-in">
+    <div class="top">
+      <span class="brand">하루결</span>
+      <button class="ghost" id="toolsBtn" aria-expanded="false">백업</button>
     </div>
-    <p class="msg" id="backupMsg" hidden></p>
+    <div class="month">
+      <button class="arr" id="prevWk" aria-label="지난주">‹</button>
+      <span id="monthLbl"></span>
+      <button class="arr" id="nextWk" aria-label="다음 주">›</button>
+    </div>
+    <div class="strip" id="strip"></div>
   </div>
-  <main id="view"></main>
+</header>
+<div class="wrap">
+  <div class="page">
+    <span class="ribbon" aria-hidden="true"></span>
+    <p class="note" id="sampleNote">예시 기록이 들어 있어요. 하나라도 쓰거나 지우면 내 노트가 돼요.</p>
+    <div class="backup" id="backup" hidden>
+      <p>기록은 이 휴대폰에만 저장돼요. 가끔 백업 파일을 저장해두면 휴대폰을 바꿔도 옮길 수 있어요.</p>
+      <div class="bar">
+        <button class="pen" id="exportBtn">백업 파일 저장</button>
+        <label class="pen" for="importFile">백업 불러오기</label>
+        <input type="file" id="importFile" accept="application/json,.json">
+      </div>
+      <p class="msg" id="backupMsg" hidden></p>
+    </div>
+    <main id="view"></main>
+  </div>
 </div>
 <nav class="tabs" aria-label="화면">
   <div class="in">
-    <button data-tab="day" id="tab-day">오늘</button>
-    <button data-tab="week" id="tab-week">이번 주</button>
-    <button data-tab="log" id="tab-log">연구 기록</button>
+    <button data-tab="day" id="tab-day"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>하루</button>
+    <button data-tab="week" id="tab-week"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>한 주</button>
+    <button data-tab="log" id="tab-log"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M9 10h6M9 14h6"/><circle cx="7.5" cy="4" r=".1"/></svg>연구 기록</button>
   </div>
 </nav>
 
@@ -165,10 +204,12 @@ const DOW = ["일","월","화","수","목","금","토"];
 const PROJECTS = ["ADNI QC","Q-MR","석사 지원","수업","기타"];
 const pad = n => String(n).padStart(2,"0");
 const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-const addDays = (s,n) => { const d = new Date(s+"T00:00:00"); d.setDate(d.getDate()+n); return iso(d); };
-const fmt = s => { const d = new Date(s+"T00:00:00"); return `${d.getMonth()+1}.${pad(d.getDate())} ${DOW[d.getDay()]}`; };
+const D = s => new Date(s+"T00:00:00");
+const addDays = (s,n) => { const d = D(s); d.setDate(d.getDate()+n); return iso(d); };
+const fmt = s => { const d = D(s); return `${d.getMonth()+1}.${pad(d.getDate())} ${DOW[d.getDay()]}`; };
+const weekStart = s => addDays(s, -((D(s).getDay()+6)%7));
 const uid = () => Math.random().toString(36).slice(2,9);
-const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const TODAY = iso(new Date());
 
 function sample() {
@@ -189,8 +230,8 @@ function sample() {
     ],
     logs: [
       {id:uid(), date:t, project:"ADNI QC", text:"call rate 기준 0.98로 다시 필터링. 제거된 샘플 수가 예상보다 많아서 원인 확인 필요."},
-      {id:uid(), date:y, project:"Q-MR", text:"doubly-ranked 방법 초록 읽음. 계층을 나누는 방식이 핵심인 듯. KoGES에 적용 가능한지 데이터 변수부터 확인하기."},
-      {id:uid(), date:y2, project:"석사 지원", text:"연구계획서에 넣을 키워드: 유전체 QC 경험, MR, 한국 코호트."}
+      {id:uid(), date:y, project:"Q-MR", text:"doubly-ranked 방법 초록 읽음. 계층을 나누는 방식이 핵심인 듯."},
+      {id:uid(), date:y2, project:"석사 지원", text:"연구계획서 키워드: 유전체 QC 경험, MR, 한국 코호트."}
     ]
   };
 }
@@ -199,110 +240,119 @@ let state;
 try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
 if (!state || !state.events) state = sample();
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
-const clearSample = () => { if (state.sample) { state.sample = false; } };
+const mine = () => { state.sample = false; };
 
 let tab = "day", cur = TODAY, filter = "전체";
 try { tab = localStorage.getItem(KEY+".tab") || "day"; } catch (e) {}
-
 const view = document.getElementById("view");
-document.getElementById("todayLbl").textContent = fmt(TODAY);
+
+const hasAny = d => state.events.some(e => e.date === d) || state.todos.some(t => t.date === d) || state.logs.some(l => l.date === d);
+
+function renderCover() {
+  const ws = weekStart(cur);
+  const days = Array.from({length:7}, (_,i) => addDays(ws,i));
+  const a = D(days[0]), b = D(days[6]);
+  document.getElementById("monthLbl").textContent =
+    `${a.getFullYear()}년 ${a.getMonth()+1}월` + (a.getMonth() !== b.getMonth() ? ` – ${b.getMonth()+1}월` : "");
+  document.getElementById("strip").innerHTML = days.map(d => {
+    const dd = D(d);
+    const cls = ["chip", d === cur ? "sel" : "", d === TODAY ? "today" : "", hasAny(d) ? "has" : ""].join(" ");
+    return `<button class="${cls}" data-day="${d}" aria-label="${fmt(d)}">${DOW[dd.getDay()]}<span class="n">${dd.getDate()}</span><span class="pip"></span></button>`;
+  }).join("");
+}
 
 function render() {
   document.getElementById("sampleNote").hidden = !state.sample;
   document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === tab));
+  renderCover();
   if (tab === "day") renderDay(); else if (tab === "week") renderWeek(); else renderLog();
 }
 
+function entryHTML(l, i) {
+  return `<article class="entry"><div class="meta"><span class="sticker ${i % 3 === 1 ? "p" : ""}">${i+1}</span><span>${fmt(l.date)}</span><span class="pj">${esc(l.project)}</span><button class="del" data-del-lg="${l.id}" aria-label="기록 지우기">×</button></div><span class="hand">${esc(l.text)}</span></article>`;
+}
+
 function renderDay() {
+  const d = D(cur);
   const ev = state.events.filter(e => e.date === cur).sort((a,b) => a.time.localeCompare(b.time));
   const td = state.todos.filter(t => t.date === cur);
   const done = td.filter(t => t.done).length;
   const logs = state.logs.filter(l => l.date === cur);
   view.innerHTML = `
-    <div class="view-title">
-      <h1>${cur === TODAY ? "오늘" : fmt(cur)}</h1>
-      <div class="date-nav">
-        <button data-nav="-1" aria-label="전날">←</button>
-        <span>${fmt(cur)}</span>
-        <button data-nav="1" aria-label="다음날">→</button>
-      </div>
-    </div>
-    <section class="block">
-      <div class="label"><span>일정</span><span>${ev.length}</span></div>
-      <ul class="list">${ev.map(e => `<li class="row"><span class="t">${e.time||"--:--"}</span><span class="x">${esc(e.title)}</span><button class="del" data-del-ev="${e.id}" aria-label="일정 삭제">×</button></li>`).join("") || `<li class="empty">일정이 없어요.</li>`}</ul>
-      <form class="adder" id="evForm">
-        <input type="time" id="evTime" value="09:00" aria-label="시간">
-        <input class="grow" id="evTitle" placeholder="일정 추가" enterkeyhint="done" aria-label="일정 내용">
-        <button class="add-btn">추가</button>
-      </form>
-    </section>
-    <section class="block">
-      <div class="label"><span>할 일</span><span>${done}/${td.length}</span></div>
-      <div class="progress"><i style="width:${td.length ? done/td.length*100 : 0}%"></i></div>
-      <ul class="list">${td.map(t => `<li class="row todo ${t.done?"done":""}"><button class="check ${t.done?"on":""}" data-tg="${t.id}" aria-label="완료 표시"></button><span class="x">${esc(t.text)}</span><button class="del" data-del-td="${t.id}" aria-label="할 일 삭제">×</button></li>`).join("") || `<li class="empty">할 일이 없어요.</li>`}</ul>
-      <form class="adder" id="tdForm">
-        <input class="grow" id="tdText" placeholder="할 일 추가" enterkeyhint="done" aria-label="할 일 내용">
-        <button class="add-btn">추가</button>
-      </form>
-    </section>
-    <section class="block">
-      <div class="label"><span>이날의 연구 기록</span><span>${logs.length}</span></div>
-      ${logs.map(logHTML).join("") || `<div class="empty">기록이 없어요. 연구 기록 탭에서 남길 수 있어요.</div>`}
-    </section>`;
+    <div class="head"><span class="sticker ${cur === TODAY ? "p" : ""}">${d.getDate()}</span>
+      <h1>${cur === TODAY ? "오늘" : `${d.getMonth()+1}월 ${d.getDate()}일`}<small>${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()} ${DOW[d.getDay()]}요일</small></h1></div>
+
+    <span class="tape">일정</span><span class="count">${ev.length}</span>
+    ${ev.map(e => `<div class="row"><span class="t">${e.time || ""}</span><span class="hand">${esc(e.title)}</span><button class="del" data-del-ev="${e.id}" aria-label="일정 지우기">×</button></div>`).join("") || `<div class="row empty"><span class="hand">비어 있는 하루</span></div>`}
+    <form class="add" id="evForm"><input type="time" id="evTime" value="09:00" aria-label="시간"><input class="grow" id="evTitle" placeholder="일정 쓰기" enterkeyhint="done" aria-label="일정"><button class="pen">추가</button></form>
+
+    <span class="tape">할 일</span><span class="count">${done}/${td.length}</span>
+    ${td.map(t => `<div class="row ${t.done ? "done" : ""}"><button class="check ${t.done ? "on" : ""}" data-tg="${t.id}" aria-label="완료 표시"></button><span class="hand">${esc(t.text)}</span><button class="del" data-del-td="${t.id}" aria-label="할 일 지우기">×</button></div>`).join("")}
+    <form class="add" id="tdForm"><input class="grow" id="tdText" placeholder="할 일 쓰기" enterkeyhint="done" aria-label="할 일"><button class="pen">추가</button></form>
+
+    <span class="tape">이날의 연구 기록</span><span class="count">${logs.length}</span>
+    ${logs.map(entryHTML).join("") || `<div class="row empty"><span class="hand">연구 기록 탭에서 남길 수 있어요</span></div>`}
+    <div class="blank"></div>`;
 }
 
 function renderWeek() {
-  const d = new Date(TODAY+"T00:00:00");
-  const mon = addDays(TODAY, -((d.getDay()+6)%7));
-  const days = Array.from({length:7}, (_,i) => addDays(mon,i));
+  const ws = weekStart(cur);
+  const days = Array.from({length:7}, (_,i) => addDays(ws,i));
   const all = state.todos.filter(t => days.includes(t.date));
   view.innerHTML = `
-    <div class="view-title"><h1>이번 주</h1><div class="date-nav"><span>${fmt(days[0])} – ${fmt(days[6])}</span></div></div>
-    <section class="block">
-      <div class="label"><span>요일별</span><span>할 일 ${all.filter(t=>t.done).length}/${all.length}</span></div>
-      <div class="week">${days.map(day => {
-        const ev = state.events.filter(e => e.date === day).sort((a,b)=>a.time.localeCompare(b.time));
-        const td = state.todos.filter(t => t.date === day);
-        const lg = state.logs.filter(l => l.date === day).length;
-        const dd = new Date(day+"T00:00:00");
-        return `<button class="day ${day===TODAY?"is-today":""}" data-go="${day}">
-          <span class="d">${dd.getMonth()+1}.${pad(dd.getDate())}<b>${DOW[dd.getDay()]}요일</b></span>
-          <span class="items">${ev.map(e=>`<div>${e.time} ${esc(e.title)}</div>`).join("")}
-            ${lg ? `<div class="m">연구 기록 ${lg}</div>` : ""}
-            ${!ev.length && !lg && !td.length ? `<div class="m">비어 있음</div>` : ""}
-            ${td.length ? `<span class="dots">${td.map(t=>`<i class="${t.done?"f":""}"></i>`).join("")}</span>` : ""}
-          </span></button>`; }).join("")}</div>
-    </section>`;
-}
-
-function logHTML(l) {
-  return `<article class="log"><div class="meta"><span class="dt">${fmt(l.date)}</span><span class="pj">${esc(l.project)}</span><button class="del" data-del-lg="${l.id}" aria-label="기록 삭제">×</button></div><p>${esc(l.text)}</p></article>`;
+    <div class="head"><span class="sticker">${Math.ceil(D(ws).getDate()/7)}</span>
+      <h1>${D(ws).getMonth()+1}월 ${Math.ceil(D(ws).getDate()/7)}주차<small>${ws === weekStart(TODAY) ? "이번 주 · " : ""}${fmt(days[0])} – ${fmt(days[6])} · 할 일 ${all.filter(t=>t.done).length}/${all.length}</small></h1></div>
+    ${days.map(day => {
+      const dd = D(day);
+      const ev = state.events.filter(e => e.date === day).sort((a,b)=>a.time.localeCompare(b.time));
+      const td = state.todos.filter(t => t.date === day);
+      const lg = state.logs.filter(l => l.date === day).length;
+      const cls = day === TODAY ? "p" : (hasAny(day) ? "" : "o");
+      const lines = ev.map(e => `${e.time} ${esc(e.title)}`);
+      return `<button class="wday" data-go="${day}"><span class="sticker ${cls}">${dd.getDate()}</span><span class="body">
+        <span class="dow">${DOW[dd.getDay()]}요일</span>
+        ${lines.length ? lines.map(l => `<span class="hand">${l}</span>`).join("") : `<span class="hand" style="color:var(--pencil)">—</span>`}
+        ${td.length || lg ? `<span class="todos">${td.length ? `할 일 ${td.filter(t=>t.done).length}/${td.length}` : ""}${td.length && lg ? " · " : ""}${lg ? `연구 기록 ${lg}` : ""}</span>` : ""}
+      </span></button>`; }).join("")}
+    <div class="blank"></div>`;
 }
 
 function renderLog() {
   const list = state.logs.filter(l => filter === "전체" || l.project === filter).sort((a,b)=>b.date.localeCompare(a.date));
   view.innerHTML = `
-    <div class="view-title"><h1>연구 기록</h1><div class="date-nav"><span>${state.logs.length}개</span></div></div>
-    <form class="log-form" id="lgForm">
-      <textarea id="lgText" placeholder="오늘 한 분석, 읽은 논문, 막힌 점을 짧게 남겨요."></textarea>
-      <div class="bar">
-        <select id="lgProj" aria-label="프로젝트">${PROJECTS.map(p=>`<option>${p}</option>`).join("")}</select>
-        <button class="add-btn">기록</button>
-      </div>
+    <div class="head"><span class="sticker">${state.logs.length}</span><h1>연구 기록<small>오늘 한 분석, 읽은 논문, 막힌 점</small></h1></div>
+    <form class="form" id="lgForm">
+      <textarea id="lgText" placeholder="오늘의 연구 한 줄"></textarea>
+      <div class="bar"><select id="lgProj" aria-label="프로젝트">${PROJECTS.map(p=>`<option>${p}</option>`).join("")}</select><button class="pen">남기기</button></div>
     </form>
-    <div class="chips">${["전체",...PROJECTS].map(p=>`<button class="chip ${p===filter?"on":""}" data-f="${p}">${p}</button>`).join("")}</div>
-    <section class="block">${list.map(logHTML).join("") || `<div class="empty">이 프로젝트에는 아직 기록이 없어요.</div>`}</section>`;
+    <div class="filters">${["전체",...PROJECTS].map(p=>`<button class="f ${p===filter?"on":""}" data-f="${p}">${p}</button>`).join("")}</div>
+    ${list.map(entryHTML).join("") || `<div class="row empty"><span class="hand">이 프로젝트엔 아직 기록이 없어요</span></div>`}
+    <div class="blank"></div>`;
 }
+
+function go(newTab) {
+  tab = newTab;
+  try { localStorage.setItem(KEY+".tab", tab); } catch (e) {}
+  render(); window.scrollTo(0,0);
+}
+
+document.querySelector(".cover").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.day) { cur = b.dataset.day; if (tab !== "day") return go("day"); }
+  else if (b.id === "prevWk") cur = addDays(cur, -7);
+  else if (b.id === "nextWk") cur = addDays(cur, 7);
+  else return;
+  render();
+});
 
 view.addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
   const ds = b.dataset;
-  if (ds.nav) { cur = addDays(cur, +ds.nav); }
-  else if (ds.tg) { const t = state.todos.find(x=>x.id===ds.tg); t.done = !t.done; }
-  else if (ds.delEv) { state.events = state.events.filter(x=>x.id!==ds.delEv); clearSample(); }
-  else if (ds.delTd) { state.todos = state.todos.filter(x=>x.id!==ds.delTd); clearSample(); }
-  else if (ds.delLg) { state.logs = state.logs.filter(x=>x.id!==ds.delLg); clearSample(); }
-  else if (ds.go) { cur = ds.go; tab = "day"; }
+  if (ds.tg) { const t = state.todos.find(x=>x.id===ds.tg); t.done = !t.done; }
+  else if (ds.delEv) { state.events = state.events.filter(x=>x.id!==ds.delEv); mine(); }
+  else if (ds.delTd) { state.todos = state.todos.filter(x=>x.id!==ds.delTd); mine(); }
+  else if (ds.delLg) { state.logs = state.logs.filter(x=>x.id!==ds.delLg); mine(); }
+  else if (ds.go) { cur = ds.go; save(); return go("day"); }
   else if (ds.f) { filter = ds.f; }
   else return;
   save(); render();
@@ -319,17 +369,16 @@ view.addEventListener("submit", e => {
     state.todos.push({id:uid(), date:cur, text, done:false});
   } else if (id === "lgForm") {
     const text = document.getElementById("lgText").value.trim(); if (!text) return;
-    state.logs.push({id:uid(), date:TODAY, project:document.getElementById("lgProj").value, text});
+    state.logs.push({id:uid(), date:cur, project:document.getElementById("lgProj").value, text});
   }
-  clearSample(); save(); render();
+  mine(); save(); render();
   const f = document.querySelector(`#${id} input.grow, #${id} textarea`); if (f) f.focus();
 });
 
 document.querySelector("nav.tabs").addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
-  tab = b.dataset.tab; if (tab === "day") cur = TODAY;
-  try { localStorage.setItem(KEY+".tab", tab); } catch (err) {}
-  render(); window.scrollTo(0,0);
+  if (b.dataset.tab === "day" && tab === "day") cur = TODAY;
+  go(b.dataset.tab);
 });
 
 const bk = document.getElementById("backup"), msg = document.getElementById("backupMsg");
