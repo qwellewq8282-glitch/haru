@@ -1,7 +1,7 @@
 {
   "name": "하루결",
   "short_name": "하루결",
-  "description": "일정, 할 일, 연구 기록을 한곳에 담은 담백한 플래너",
+  "description": "일정, 할 일, 일기, 습관을 한곳에 담은 담백한 플래너",
   "lang": "ko",
   "start_url": "./",
   "scope": "./",
