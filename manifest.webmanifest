@@ -1,0 +1,15 @@
+{
+  "name": "하루결",
+  "short_name": "하루결",
+  "description": "일정, 할 일, 연구 기록을 한곳에 담은 담백한 플래너",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f1ec",
+  "theme_color": "#f3f1ec",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
